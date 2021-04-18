@@ -51,12 +51,11 @@ def login():
 
         password = getpass("What is your password?:\n")
         user = database.authenticated_user(account_number_from_user, password)
-        user_auth_session = database.auth_login(str(account_number),first_name, last_name, email, password, str(balance))
-        
+        user_session = database.auth_login(user[0])
+        if user_session:
+            print("===== Session has began =====")
         if user:
             bank_operation(user, account_number_from_user)
-        elif user_auth_session:
-            print("===== Session has began =====")
         print("Invalid account or pin")
         login()
     else:

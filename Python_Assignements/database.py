@@ -106,37 +106,30 @@ def does_account_number_exist(account_number):
 
 def authenticated_user(account_number, password):
     if does_account_number_exist(account_number):
-        user = str.split(read(account_number), ',')
+        user = str.split((account_number), ',')
         if password == user[3]:
             return user
     return False
 
 
-def auth_login(account_number,first_name, last_name, email, password, balance):
-    user_details = first_name + "," + last_name + "," + email + "," + password + "," + str(balance)
+def auth_login(account_number, password):
     if does_account_number_exist(account_number):
-        return False
+        if password == user[3]:
+            user_auth = password
+        try:
+            f = open(user_db_auth_path + str(account_number) + ".txt", "x")
+        except FileExistsError:
+            does_file_contain_data = read(user_db_auth_path + str(account_number) + ".txt")
+            if not does_file_contain_data:
+                delete(account_number)
+            else:
 
-    if does_email_exist(email):
-        print("User already exist")
+                f.write(user_auth)
+                f.close()
+                complete_state = True
 
-    complete_state = False
-
-    try:
-        f = open(user_db_auth_path + str(account_number) + ".txt", "x")
-    except FileExistsError:
-
-        does_file_contain_data = read(user_db_auth_path + str(account_number) + ".txt")
-        if not does_file_contain_data:
-            delete(account_number)
-    else:
-
-        f.write(str(user_details))
-        f.close()
-        complete_state = True
-
-    finally:
-        return complete_state
+        finally:
+                return complete_state
 
 def auth_logout(account_number):
     
