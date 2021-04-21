@@ -111,32 +111,25 @@ def authenticated_user(account_number, password):
             return user
     return False
 
+def start_auth(user):
+    # the start of login session.
 
-def auth_login(account_number, password):
-    if does_account_number_exist(account_number):
-        if password == user[3]:
-            user_auth = password
-        try:
-            f = open(user_db_auth_path + str(account_number) + ".txt", "x")
-        except FileExistsError:
-            does_file_contain_data = read(user_db_auth_path + str(account_number) + ".txt")
-            if not does_file_contain_data:
-                delete(account_number)
-            else:
+    try:
+        f = open(user_db_auth_path + str(user) + ".txt", 'x')
+        f.write(str((user)))
+        f.close()
+    except FileExistsError:  # If file exists, user is logged on.
+        return "Authentication started"
+        exit()
 
-                f.write(user_auth)
-                f.close()
-                complete_state = True
 
-        finally:
-                return complete_state
-
-def auth_logout(account_number):
-    
-    if os.path.exists(user_db_auth_path + str(account_number) + '.txt'):
-        os.remove(user_db_auth_path + str(account_number) + '.txt')
+def end_auth(user):
+    if os.path.exists(user_db_auth_path + str(user) + '.txt'):
+        os.remove(user_db_path + str(user) + '.txt')
         is_delete_successful = True
     else:
         print("Account doesn't exist.")
         is_delete_successful = False
     return is_delete_successful
+
+
